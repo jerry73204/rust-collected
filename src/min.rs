@@ -27,3 +27,13 @@ impl<A> From<MinCollector<A>> for Option<A> {
         collector.0
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn min_test() {
+        assert_eq!((1..100).collect::<MinCollector<usize>>().unwrap(), 1);
+    }
+}

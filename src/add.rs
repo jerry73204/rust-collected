@@ -27,3 +27,19 @@ impl<A> From<AddCollector<A>> for Option<A> {
         collector.0
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn add_test() {
+        assert_eq!(
+            iter::repeat(1)
+                .take(100)
+                .collect::<AddCollector<usize>>()
+                .unwrap(),
+            100
+        );
+    }
+}

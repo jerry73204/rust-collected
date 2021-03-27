@@ -27,3 +27,19 @@ impl<A> From<MulCollector<A>> for Option<A> {
         collector.0
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn mul_test() {
+        assert_eq!(
+            iter::repeat(2)
+                .take(10)
+                .collect::<MulCollector<usize>>()
+                .unwrap(),
+            1024
+        );
+    }
+}

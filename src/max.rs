@@ -27,3 +27,13 @@ impl<A> From<MaxCollector<A>> for Option<A> {
         collector.0
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn max_test() {
+        assert_eq!((1..100).collect::<MaxCollector<usize>>().unwrap(), 99);
+    }
+}

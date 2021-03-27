@@ -17,3 +17,19 @@ impl<A> ProductCollector<A> {
         self.0
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn product_test() {
+        assert_eq!(
+            iter::repeat(2)
+                .take(10)
+                .collect::<ProductCollector<usize>>()
+                .get(),
+            1024
+        );
+    }
+}

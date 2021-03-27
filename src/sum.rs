@@ -17,3 +17,19 @@ impl<A> SumCollector<A> {
         self.0
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn sum_test() {
+        assert_eq!(
+            iter::repeat(1)
+                .take(100)
+                .collect::<SumCollector<usize>>()
+                .get(),
+            100
+        );
+    }
+}
