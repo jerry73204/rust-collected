@@ -8,8 +8,8 @@ where
     A: Ord,
 {
     fn from_iter<T: IntoIterator<Item = A>>(iter: T) -> Self {
-        let sum = iter.into_iter().fold1(|lhs, rhs| lhs.max(rhs));
-        Self(sum)
+        let max = iter.into_iter().fold1(|lhs, rhs| lhs.max(rhs));
+        Self(max)
     }
 }
 
@@ -29,12 +29,31 @@ impl<A> From<MaxCollector<A>> for Option<A> {
     }
 }
 
+impl<A> Extend<A> for MaxCollector<A>
+where
+    A: Ord,
+{
+    fn extend<T: IntoIterator<Item = A>>(&mut self, iter: T) {
+        let max = self
+            .0
+            .take()
+            .into_iter()
+            .chain(iter)
+            .fold1(|lhs, rhs| lhs.max(rhs));
+        self.0 = max;
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
 
     #[test]
     fn max_test() {
-        assert_eq!((1..100).collect::<MaxCollector<usize>>().unwrap(), 99);
+        let mut max: MaxCollector<usize> = (1..100).collect();
+        assert_eq!(max.unwrap(), 99);
+
+        max.extend(100..200);
+        assert_eq!(max.unwrap(), 199);
     }
 }

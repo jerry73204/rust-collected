@@ -29,18 +29,31 @@ impl<A> From<AddCollector<A>> for Option<A> {
     }
 }
 
+impl<A> Extend<A> for AddCollector<A>
+where
+    A: Add<A, Output = A>,
+{
+    fn extend<T: IntoIterator<Item = A>>(&mut self, iter: T) {
+        let sum = self
+            .0
+            .take()
+            .into_iter()
+            .chain(iter)
+            .fold1(|lhs, rhs| lhs + rhs);
+        self.0 = sum;
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
 
     #[test]
     fn add_test() {
-        assert_eq!(
-            iter::repeat(1)
-                .take(100)
-                .collect::<AddCollector<usize>>()
-                .unwrap(),
-            100
-        );
+        let mut sum: AddCollector<usize> = iter::repeat(1).take(100).collect();
+        assert_eq!(sum.unwrap(), 100);
+
+        sum.extend(1..=100);
+        assert_eq!(sum.unwrap(), 5150);
     }
 }

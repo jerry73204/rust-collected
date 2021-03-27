@@ -19,18 +19,29 @@ impl<A> SumCollector<A> {
     }
 }
 
+impl<A> Extend<A> for SumCollector<A>
+where
+    A: Sum<A>,
+{
+    fn extend<T: IntoIterator<Item = A>>(&mut self, iter: T) {
+        let default: A = iter::empty().sum();
+        let sum = iter::once(mem::replace(&mut self.0, default))
+            .chain(iter)
+            .sum();
+        self.0 = sum;
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
 
     #[test]
     fn sum_test() {
-        assert_eq!(
-            iter::repeat(1)
-                .take(100)
-                .collect::<SumCollector<usize>>()
-                .get(),
-            100
-        );
+        let mut sum: SumCollector<usize> = iter::repeat(1).take(100).collect();
+        assert_eq!(sum.get(), 100);
+
+        sum.extend(1..=100);
+        assert_eq!(sum.get(), 5150);
     }
 }

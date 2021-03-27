@@ -1,5 +1,6 @@
 pub use itertools::Itertools;
 pub use std::{
-    iter::{self, FromIterator, Product, Sum},
+    iter::{self, Extend, FromIterator, Product, Sum},
+    mem,
     ops::{Add, Mul},
 };

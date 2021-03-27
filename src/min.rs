@@ -8,8 +8,8 @@ where
     A: Ord,
 {
     fn from_iter<T: IntoIterator<Item = A>>(iter: T) -> Self {
-        let sum = iter.into_iter().fold1(|lhs, rhs| lhs.min(rhs));
-        Self(sum)
+        let min = iter.into_iter().fold1(|lhs, rhs| lhs.min(rhs));
+        Self(min)
     }
 }
 
@@ -29,12 +29,31 @@ impl<A> From<MinCollector<A>> for Option<A> {
     }
 }
 
+impl<A> Extend<A> for MinCollector<A>
+where
+    A: Ord,
+{
+    fn extend<T: IntoIterator<Item = A>>(&mut self, iter: T) {
+        let min = self
+            .0
+            .take()
+            .into_iter()
+            .chain(iter)
+            .fold1(|lhs, rhs| lhs.min(rhs));
+        self.0 = min;
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
 
     #[test]
     fn min_test() {
-        assert_eq!((1..100).collect::<MinCollector<usize>>().unwrap(), 1);
+        let mut min: MinCollector<isize> = (1..100).collect();
+        assert_eq!(min.unwrap(), 1);
+
+        min.extend((-200)..(-100));
+        assert_eq!(min.unwrap(), -200);
     }
 }

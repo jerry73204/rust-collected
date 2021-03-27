@@ -29,18 +29,31 @@ impl<A> From<MulCollector<A>> for Option<A> {
     }
 }
 
+impl<A> Extend<A> for MulCollector<A>
+where
+    A: Mul<A, Output = A>,
+{
+    fn extend<T: IntoIterator<Item = A>>(&mut self, iter: T) {
+        let prod = self
+            .0
+            .take()
+            .into_iter()
+            .chain(iter)
+            .fold1(|lhs, rhs| lhs * rhs);
+        self.0 = prod;
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
 
     #[test]
     fn mul_test() {
-        assert_eq!(
-            iter::repeat(2)
-                .take(10)
-                .collect::<MulCollector<usize>>()
-                .unwrap(),
-            1024
-        );
+        let mut prod: MulCollector<usize> = iter::repeat(2).take(10).collect();
+        assert_eq!(prod.unwrap(), 1024);
+
+        prod.extend(1..=5);
+        assert_eq!(prod.unwrap(), 122880);
     }
 }

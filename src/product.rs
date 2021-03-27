@@ -19,18 +19,29 @@ impl<A> ProductCollector<A> {
     }
 }
 
+impl<A> Extend<A> for ProductCollector<A>
+where
+    A: Product<A>,
+{
+    fn extend<T: IntoIterator<Item = A>>(&mut self, iter: T) {
+        let default: A = iter::empty().product();
+        let prod = iter::once(mem::replace(&mut self.0, default))
+            .chain(iter)
+            .product();
+        self.0 = prod;
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
 
     #[test]
     fn product_test() {
-        assert_eq!(
-            iter::repeat(2)
-                .take(10)
-                .collect::<ProductCollector<usize>>()
-                .get(),
-            1024
-        );
+        let mut prod: ProductCollector<usize> = iter::repeat(2).take(10).collect();
+        assert_eq!(prod.get(), 1024);
+
+        prod.extend(1..=5);
+        assert_eq!(prod.get(), 122880);
     }
 }
