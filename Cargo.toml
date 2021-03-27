@@ -1,6 +1,6 @@
 [package]
 name = "collected"
-version = "0.1.1"
+version = "0.1.2"
 description = "Summation, product, maximum and more special collectors for Rust iterators."
 authors = ["jerry73204 <jerry73204@gmail.com>"]
 edition = "2018"
