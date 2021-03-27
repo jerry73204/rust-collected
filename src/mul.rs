@@ -1,5 +1,6 @@
 use crate::common::*;
 
+#[derive(Debug, Clone, Copy, PartialOrd, Ord, PartialEq, Eq, Hash, Default)]
 pub struct MulCollector<A>(pub Option<A>);
 
 impl<A> FromIterator<A> for MulCollector<A>
