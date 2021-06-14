@@ -1,5 +1,6 @@
 use crate::common::*;
 
+/// A collection that groups the tuples `(key, value)` by key.
 #[derive(Debug, Clone)]
 pub struct GroupHashMap<K, V>(HashMap<K, Vec<V>>);
 

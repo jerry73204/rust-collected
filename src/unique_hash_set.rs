@@ -1,5 +1,10 @@
 use crate::common::*;
 
+/// A collection that takes unique values into a set.
+///
+/// It maintains a [`HashSet`](HashSet) internally. When it is
+/// built from iterator or extended, it expects unique input values.
+/// Otherwise, it empties out the internal and ignore future values.
 #[derive(Debug, Clone)]
 pub struct UniqueHashSet<A>(Option<HashSet<A>>);
 

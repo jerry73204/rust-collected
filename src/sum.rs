@@ -1,5 +1,6 @@
 use crate::common::*;
 
+/// A collection taking the summation from values with [`Sum`](Sum) trait.
 #[derive(Debug, Clone, Copy, PartialOrd, Ord, PartialEq, Eq, Hash, Default)]
 pub struct SumVal<A>(pub A);
 

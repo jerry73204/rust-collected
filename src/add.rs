@@ -1,5 +1,6 @@
 use crate::common::*;
 
+/// A collection that adds up values with [`Add`](Add) trait.
 #[derive(Debug, Clone, Copy, PartialOrd, Ord, PartialEq, Eq, Hash, Default)]
 pub struct AddVal<A>(Option<A>);
 

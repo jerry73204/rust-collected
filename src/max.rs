@@ -1,5 +1,6 @@
 use crate::common::*;
 
+/// A collection that computes the maximum value.
 #[derive(Debug, Clone, Copy, PartialOrd, Ord, PartialEq, Eq, Hash, Default)]
 pub struct MaxVal<A>(Option<A>);
 

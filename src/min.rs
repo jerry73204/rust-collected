@@ -1,5 +1,6 @@
 use crate::common::*;
 
+/// A collection that computes the minimum value.
 #[derive(Debug, Clone, Copy, PartialOrd, Ord, PartialEq, Eq, Hash, Default)]
 pub struct MinVal<A>(Option<A>);
 

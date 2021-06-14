@@ -1,5 +1,6 @@
 use crate::common::*;
 
+/// A collection that multiplies values with [`Mul`](Mul) trait.
 #[derive(Debug, Clone, Copy, PartialOrd, Ord, PartialEq, Eq, Hash, Default)]
 pub struct MulVal<A>(Option<A>);
 
