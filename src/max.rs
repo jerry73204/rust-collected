@@ -1,7 +1,7 @@
 use crate::common::*;
 
 #[derive(Debug, Clone, Copy, PartialOrd, Ord, PartialEq, Eq, Hash, Default)]
-pub struct MaxCollector<A>(pub Option<A>);
+pub struct MaxCollector<A>(Option<A>);
 
 impl<A> FromIterator<A> for MaxCollector<A>
 where
@@ -18,7 +18,11 @@ impl<A> MaxCollector<A> {
         self.0.unwrap()
     }
 
-    pub fn get(self) -> Option<A> {
+    pub fn get(&self) -> Option<&A> {
+        self.0.as_ref()
+    }
+
+    pub fn into_inner(self) -> Option<A> {
         self.0
     }
 }

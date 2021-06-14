@@ -14,7 +14,11 @@ where
 }
 
 impl<A> ProductCollector<A> {
-    pub fn get(self) -> A {
+    pub fn get(&self) -> &A {
+        &self.0
+    }
+
+    pub fn into_inner(self) -> A {
         self.0
     }
 }
@@ -39,9 +43,9 @@ mod tests {
     #[test]
     fn product_test() {
         let mut prod: ProductCollector<usize> = iter::repeat(2).take(10).collect();
-        assert_eq!(prod.get(), 1024);
+        assert_eq!(*prod.get(), 1024);
 
         prod.extend(1..=5);
-        assert_eq!(prod.get(), 122880);
+        assert_eq!(*prod.get(), 122880);
     }
 }

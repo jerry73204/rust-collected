@@ -14,7 +14,11 @@ where
 }
 
 impl<A> SumCollector<A> {
-    pub fn get(self) -> A {
+    pub fn get(&self) -> &A {
+        &self.0
+    }
+
+    pub fn into_inner(self) -> A {
         self.0
     }
 }
@@ -39,9 +43,9 @@ mod tests {
     #[test]
     fn sum_test() {
         let mut sum: SumCollector<usize> = iter::repeat(1).take(100).collect();
-        assert_eq!(sum.get(), 100);
+        assert_eq!(*sum.get(), 100);
 
         sum.extend(1..=100);
-        assert_eq!(sum.get(), 5150);
+        assert_eq!(*sum.get(), 5150);
     }
 }

@@ -1,7 +1,7 @@
 use crate::common::*;
 
 #[derive(Debug, Clone, Copy, PartialOrd, Ord, PartialEq, Eq, Hash, Default)]
-pub struct AddCollector<A>(pub Option<A>);
+pub struct AddCollector<A>(Option<A>);
 
 impl<A> FromIterator<A> for AddCollector<A>
 where
@@ -18,7 +18,11 @@ impl<A> AddCollector<A> {
         self.0.unwrap()
     }
 
-    pub fn get(self) -> Option<A> {
+    pub fn get(&self) -> Option<&A> {
+        self.0.as_ref()
+    }
+
+    pub fn into_inner(self) -> Option<A> {
         self.0
     }
 }
