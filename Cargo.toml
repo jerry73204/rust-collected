@@ -15,3 +15,6 @@ license = "MIT"
 
 [dependencies]
 itertools = "0.10.0"
+
+[dev-dependencies]
+maplit = "1.0.2"
