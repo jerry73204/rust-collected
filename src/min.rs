@@ -1,9 +1,9 @@
 use crate::common::*;
 
 #[derive(Debug, Clone, Copy, PartialOrd, Ord, PartialEq, Eq, Hash, Default)]
-pub struct MinCollector<A>(Option<A>);
+pub struct MinVal<A>(Option<A>);
 
-impl<A> FromIterator<A> for MinCollector<A>
+impl<A> FromIterator<A> for MinVal<A>
 where
     A: Ord,
 {
@@ -13,7 +13,7 @@ where
     }
 }
 
-impl<A> MinCollector<A> {
+impl<A> MinVal<A> {
     pub fn unwrap(self) -> A {
         self.0.unwrap()
     }
@@ -27,13 +27,13 @@ impl<A> MinCollector<A> {
     }
 }
 
-impl<A> From<MinCollector<A>> for Option<A> {
-    fn from(collector: MinCollector<A>) -> Self {
+impl<A> From<MinVal<A>> for Option<A> {
+    fn from(collector: MinVal<A>) -> Self {
         collector.0
     }
 }
 
-impl<A> Extend<A> for MinCollector<A>
+impl<A> Extend<A> for MinVal<A>
 where
     A: Ord,
 {
@@ -54,7 +54,7 @@ mod tests {
 
     #[test]
     fn min_test() {
-        let mut min: MinCollector<isize> = (1..100).collect();
+        let mut min: MinVal<isize> = (1..100).collect();
         assert_eq!(min.unwrap(), 1);
 
         min.extend((-200)..(-100));

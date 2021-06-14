@@ -1,9 +1,9 @@
 use crate::common::*;
 
 #[derive(Debug, Clone, Copy, PartialOrd, Ord, PartialEq, Eq, Hash, Default)]
-pub struct MaxCollector<A>(Option<A>);
+pub struct MaxVal<A>(Option<A>);
 
-impl<A> FromIterator<A> for MaxCollector<A>
+impl<A> FromIterator<A> for MaxVal<A>
 where
     A: Ord,
 {
@@ -13,7 +13,7 @@ where
     }
 }
 
-impl<A> MaxCollector<A> {
+impl<A> MaxVal<A> {
     pub fn unwrap(self) -> A {
         self.0.unwrap()
     }
@@ -27,13 +27,13 @@ impl<A> MaxCollector<A> {
     }
 }
 
-impl<A> From<MaxCollector<A>> for Option<A> {
-    fn from(collector: MaxCollector<A>) -> Self {
+impl<A> From<MaxVal<A>> for Option<A> {
+    fn from(collector: MaxVal<A>) -> Self {
         collector.0
     }
 }
 
-impl<A> Extend<A> for MaxCollector<A>
+impl<A> Extend<A> for MaxVal<A>
 where
     A: Ord,
 {
@@ -54,7 +54,7 @@ mod tests {
 
     #[test]
     fn max_test() {
-        let mut max: MaxCollector<usize> = (1..100).collect();
+        let mut max: MaxVal<usize> = (1..100).collect();
         assert_eq!(max.unwrap(), 99);
 
         max.extend(100..200);

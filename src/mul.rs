@@ -1,9 +1,9 @@
 use crate::common::*;
 
 #[derive(Debug, Clone, Copy, PartialOrd, Ord, PartialEq, Eq, Hash, Default)]
-pub struct MulCollector<A>(Option<A>);
+pub struct MulVal<A>(Option<A>);
 
-impl<A> FromIterator<A> for MulCollector<A>
+impl<A> FromIterator<A> for MulVal<A>
 where
     A: Mul<A, Output = A>,
 {
@@ -13,7 +13,7 @@ where
     }
 }
 
-impl<A> MulCollector<A> {
+impl<A> MulVal<A> {
     pub fn unwrap(self) -> A {
         self.0.unwrap()
     }
@@ -27,13 +27,13 @@ impl<A> MulCollector<A> {
     }
 }
 
-impl<A> From<MulCollector<A>> for Option<A> {
-    fn from(collector: MulCollector<A>) -> Self {
+impl<A> From<MulVal<A>> for Option<A> {
+    fn from(collector: MulVal<A>) -> Self {
         collector.0
     }
 }
 
-impl<A> Extend<A> for MulCollector<A>
+impl<A> Extend<A> for MulVal<A>
 where
     A: Mul<A, Output = A>,
 {
@@ -54,7 +54,7 @@ mod tests {
 
     #[test]
     fn mul_test() {
-        let mut prod: MulCollector<usize> = iter::repeat(2).take(10).collect();
+        let mut prod: MulVal<usize> = iter::repeat(2).take(10).collect();
         assert_eq!(prod.unwrap(), 1024);
 
         prod.extend(1..=5);

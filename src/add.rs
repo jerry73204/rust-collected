@@ -1,9 +1,9 @@
 use crate::common::*;
 
 #[derive(Debug, Clone, Copy, PartialOrd, Ord, PartialEq, Eq, Hash, Default)]
-pub struct AddCollector<A>(Option<A>);
+pub struct AddVal<A>(Option<A>);
 
-impl<A> FromIterator<A> for AddCollector<A>
+impl<A> FromIterator<A> for AddVal<A>
 where
     A: Add<A, Output = A>,
 {
@@ -13,7 +13,7 @@ where
     }
 }
 
-impl<A> AddCollector<A> {
+impl<A> AddVal<A> {
     pub fn unwrap(self) -> A {
         self.0.unwrap()
     }
@@ -27,13 +27,13 @@ impl<A> AddCollector<A> {
     }
 }
 
-impl<A> From<AddCollector<A>> for Option<A> {
-    fn from(collector: AddCollector<A>) -> Self {
+impl<A> From<AddVal<A>> for Option<A> {
+    fn from(collector: AddVal<A>) -> Self {
         collector.0
     }
 }
 
-impl<A> Extend<A> for AddCollector<A>
+impl<A> Extend<A> for AddVal<A>
 where
     A: Add<A, Output = A>,
 {
@@ -54,7 +54,7 @@ mod tests {
 
     #[test]
     fn add_test() {
-        let mut sum: AddCollector<usize> = iter::repeat(1).take(100).collect();
+        let mut sum: AddVal<usize> = iter::repeat(1).take(100).collect();
         assert_eq!(sum.unwrap(), 100);
 
         sum.extend(1..=100);

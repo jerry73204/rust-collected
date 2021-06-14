@@ -1,9 +1,9 @@
 use crate::common::*;
 
 #[derive(Debug, Clone, Copy, PartialOrd, Ord, PartialEq, Eq, Hash, Default)]
-pub struct ProductCollector<A>(pub A);
+pub struct ProductVal<A>(pub A);
 
-impl<A> FromIterator<A> for ProductCollector<A>
+impl<A> FromIterator<A> for ProductVal<A>
 where
     A: Product<A>,
 {
@@ -13,7 +13,7 @@ where
     }
 }
 
-impl<A> ProductCollector<A> {
+impl<A> ProductVal<A> {
     pub fn get(&self) -> &A {
         &self.0
     }
@@ -23,7 +23,7 @@ impl<A> ProductCollector<A> {
     }
 }
 
-impl<A> Extend<A> for ProductCollector<A>
+impl<A> Extend<A> for ProductVal<A>
 where
     A: Product<A>,
 {
@@ -42,7 +42,7 @@ mod tests {
 
     #[test]
     fn product_test() {
-        let mut prod: ProductCollector<usize> = iter::repeat(2).take(10).collect();
+        let mut prod: ProductVal<usize> = iter::repeat(2).take(10).collect();
         assert_eq!(*prod.get(), 1024);
 
         prod.extend(1..=5);

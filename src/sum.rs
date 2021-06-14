@@ -1,9 +1,9 @@
 use crate::common::*;
 
 #[derive(Debug, Clone, Copy, PartialOrd, Ord, PartialEq, Eq, Hash, Default)]
-pub struct SumCollector<A>(pub A);
+pub struct SumVal<A>(pub A);
 
-impl<A> FromIterator<A> for SumCollector<A>
+impl<A> FromIterator<A> for SumVal<A>
 where
     A: Sum<A>,
 {
@@ -13,7 +13,7 @@ where
     }
 }
 
-impl<A> SumCollector<A> {
+impl<A> SumVal<A> {
     pub fn get(&self) -> &A {
         &self.0
     }
@@ -23,7 +23,7 @@ impl<A> SumCollector<A> {
     }
 }
 
-impl<A> Extend<A> for SumCollector<A>
+impl<A> Extend<A> for SumVal<A>
 where
     A: Sum<A>,
 {
@@ -42,7 +42,7 @@ mod tests {
 
     #[test]
     fn sum_test() {
-        let mut sum: SumCollector<usize> = iter::repeat(1).take(100).collect();
+        let mut sum: SumVal<usize> = iter::repeat(1).take(100).collect();
         assert_eq!(*sum.get(), 100);
 
         sum.extend(1..=100);
