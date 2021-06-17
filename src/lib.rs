@@ -1,3 +1,12 @@
+#![cfg_attr(
+    feature = "unstable",
+    feature(
+        maybe_uninit_uninit_array,
+        maybe_uninit_extra,
+        maybe_uninit_array_assume_init
+    )
+)]
+
 //! Collection types that takes the maximum, the summation and more from iterators.
 //!
 //! Every collection type in the crate implements [`FromIterator`](core::iter::FromIterator),
@@ -19,14 +28,20 @@
 
 mod add;
 mod common;
+#[cfg(feature = "unstable")]
+mod exact_array;
+#[cfg(feature = "unstable")]
+mod fill_array;
 mod from_unique_hash;
 mod from_unique_ord;
 mod group_hash_map;
+mod last_n;
 mod max;
 mod min;
 mod mul;
 mod product;
 mod sum;
+mod topk;
 mod unique_btree_set;
 mod unique_hash_set;
 #[cfg(feature = "indexmap")]
@@ -35,14 +50,20 @@ mod uniquify_hash;
 mod uniquify_ord;
 
 pub use add::*;
+#[cfg(feature = "unstable")]
+pub use exact_array::*;
+#[cfg(feature = "unstable")]
+pub use fill_array::*;
 pub use from_unique_hash::*;
 pub use from_unique_ord::*;
 pub use group_hash_map::*;
+pub use last_n::*;
 pub use max::*;
 pub use min::*;
 pub use mul::*;
 pub use product::*;
 pub use sum::*;
+pub use topk::*;
 pub use unique_btree_set::*;
 pub use unique_hash_set::*;
 #[cfg(feature = "indexmap")]
