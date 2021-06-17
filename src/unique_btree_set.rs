@@ -1,25 +1,28 @@
 use crate::common::*;
 
-/// A collection that takes unique values into a [HashSet](HashSet).
+/// A collection that takes unique values into a [BTreeSet](BTreeSet).
 ///
-/// It maintains a [`HashSet`](HashSet) internally. When it is
+/// It maintains a [`BTreeSet`](BTreeSet) internally. When it is
 /// built from iterator or extended, it expects unique input values.
 /// Otherwise, it empties out the internal and ignore future values.
 #[derive(Debug, Clone)]
-pub struct UniqueHashSet<A>(Option<HashSet<A>>);
+pub struct UniqueBTreeSet<A>(Option<BTreeSet<A>>);
 
-impl<A> Default for UniqueHashSet<A> {
+impl<A> Default for UniqueBTreeSet<A>
+where
+    A: Ord,
+{
     fn default() -> Self {
-        Self(Some(HashSet::new()))
+        Self(Some(BTreeSet::new()))
     }
 }
 
-impl<A> FromIterator<A> for UniqueHashSet<A>
+impl<A> FromIterator<A> for UniqueBTreeSet<A>
 where
-    A: Hash + Eq,
+    A: Ord,
 {
     fn from_iter<T: IntoIterator<Item = A>>(iter: T) -> Self {
-        let set = HashSet::new();
+        let set = BTreeSet::new();
         let set = iter.into_iter().try_fold(set, |mut set, item| {
             let ok = set.insert(item);
             ok.then(|| set)
@@ -28,9 +31,9 @@ where
     }
 }
 
-impl<A> Extend<A> for UniqueHashSet<A>
+impl<A> Extend<A> for UniqueBTreeSet<A>
 where
-    A: Hash + Eq,
+    A: Ord,
 {
     fn extend<T: IntoIterator<Item = A>>(&mut self, iter: T) {
         if let Some(set) = &mut self.0 {
@@ -44,16 +47,16 @@ where
     }
 }
 
-impl<A> UniqueHashSet<A> {
-    pub fn unwrap(self) -> HashSet<A> {
+impl<A> UniqueBTreeSet<A> {
+    pub fn unwrap(self) -> BTreeSet<A> {
         self.0.unwrap()
     }
 
-    pub fn get(&self) -> Option<&HashSet<A>> {
+    pub fn get(&self) -> Option<&BTreeSet<A>> {
         self.0.as_ref()
     }
 
-    pub fn into_inner(self) -> Option<HashSet<A>> {
+    pub fn into_inner(self) -> Option<BTreeSet<A>> {
         self.0
     }
 }
@@ -61,15 +64,15 @@ impl<A> UniqueHashSet<A> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use maplit::hashset;
+    use maplit::btreeset;
 
     #[test]
     fn unque_hash_set_test() {
-        let mut set: UniqueHashSet<usize> = vec![1, 2, 3].into_iter().collect();
-        assert_eq!(set.get(), Some(&hashset! {1, 2, 3}));
+        let mut set: UniqueBTreeSet<usize> = vec![1, 2, 3].into_iter().collect();
+        assert_eq!(set.get(), Some(&btreeset! {1, 2, 3}));
 
         set.extend(vec![4, 5]);
-        assert_eq!(set.get(), Some(&hashset! {1, 2, 3, 4, 5}));
+        assert_eq!(set.get(), Some(&btreeset! {1, 2, 3, 4, 5}));
         set.extend(vec![6, 6]);
         assert_eq!(set.get(), None);
     }

@@ -1,25 +1,26 @@
 use crate::common::*;
+use indexmap::IndexSet;
 
-/// A collection that takes unique values into a [HashSet](HashSet).
+/// A collection that takes unique values into a [IndexSet](IndexSet).
 ///
-/// It maintains a [`HashSet`](HashSet) internally. When it is
+/// It maintains a [`IndexSet`](IndexSet) internally. When it is
 /// built from iterator or extended, it expects unique input values.
 /// Otherwise, it empties out the internal and ignore future values.
 #[derive(Debug, Clone)]
-pub struct UniqueHashSet<A>(Option<HashSet<A>>);
+pub struct UniqueIndexSet<A>(Option<IndexSet<A>>);
 
-impl<A> Default for UniqueHashSet<A> {
+impl<A> Default for UniqueIndexSet<A> {
     fn default() -> Self {
-        Self(Some(HashSet::new()))
+        Self(Some(IndexSet::new()))
     }
 }
 
-impl<A> FromIterator<A> for UniqueHashSet<A>
+impl<A> FromIterator<A> for UniqueIndexSet<A>
 where
     A: Hash + Eq,
 {
     fn from_iter<T: IntoIterator<Item = A>>(iter: T) -> Self {
-        let set = HashSet::new();
+        let set = IndexSet::new();
         let set = iter.into_iter().try_fold(set, |mut set, item| {
             let ok = set.insert(item);
             ok.then(|| set)
@@ -28,7 +29,7 @@ where
     }
 }
 
-impl<A> Extend<A> for UniqueHashSet<A>
+impl<A> Extend<A> for UniqueIndexSet<A>
 where
     A: Hash + Eq,
 {
@@ -44,16 +45,16 @@ where
     }
 }
 
-impl<A> UniqueHashSet<A> {
-    pub fn unwrap(self) -> HashSet<A> {
+impl<A> UniqueIndexSet<A> {
+    pub fn unwrap(self) -> IndexSet<A> {
         self.0.unwrap()
     }
 
-    pub fn get(&self) -> Option<&HashSet<A>> {
+    pub fn get(&self) -> Option<&IndexSet<A>> {
         self.0.as_ref()
     }
 
-    pub fn into_inner(self) -> Option<HashSet<A>> {
+    pub fn into_inner(self) -> Option<IndexSet<A>> {
         self.0
     }
 }
@@ -61,15 +62,14 @@ impl<A> UniqueHashSet<A> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use maplit::hashset;
 
     #[test]
     fn unque_hash_set_test() {
-        let mut set: UniqueHashSet<usize> = vec![1, 2, 3].into_iter().collect();
-        assert_eq!(set.get(), Some(&hashset! {1, 2, 3}));
+        let mut set: UniqueIndexSet<usize> = vec![1, 2, 3].into_iter().collect();
+        assert_eq!(set.get(), Some(&IndexSet::from_iter(vec![1, 2, 3])));
 
         set.extend(vec![4, 5]);
-        assert_eq!(set.get(), Some(&hashset! {1, 2, 3, 4, 5}));
+        assert_eq!(set.get(), Some(&IndexSet::from_iter(vec![1, 2, 3, 4, 5])));
         set.extend(vec![6, 6]);
         assert_eq!(set.get(), None);
     }

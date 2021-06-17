@@ -19,19 +19,33 @@
 
 mod add;
 mod common;
+mod from_unique_hash;
+mod from_unique_ord;
 mod group_hash_map;
 mod max;
 mod min;
 mod mul;
 mod product;
 mod sum;
+mod unique_btree_set;
 mod unique_hash_set;
+#[cfg(feature = "indexmap")]
+mod unique_index_set;
+mod uniquify_hash;
+mod uniquify_ord;
 
 pub use add::*;
+pub use from_unique_hash::*;
+pub use from_unique_ord::*;
 pub use group_hash_map::*;
 pub use max::*;
 pub use min::*;
 pub use mul::*;
 pub use product::*;
 pub use sum::*;
+pub use unique_btree_set::*;
 pub use unique_hash_set::*;
+#[cfg(feature = "indexmap")]
+pub use unique_index_set::*;
+pub use uniquify_hash::*;
+pub use uniquify_ord::*;

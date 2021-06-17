@@ -14,7 +14,11 @@ license = "MIT"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+indexmap = { version = "1.6.2", optional = true }
 itertools = "0.10.1"
 
 [dev-dependencies]
 maplit = "1.0.2"
+
+[features]
+default = ["indexmap"]
