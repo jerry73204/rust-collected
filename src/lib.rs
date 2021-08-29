@@ -28,17 +28,21 @@
 
 mod add;
 mod common;
+mod count;
 #[cfg(feature = "unstable")]
 mod exact_array;
 #[cfg(feature = "unstable")]
 mod fill_array;
+mod first;
 mod from_unique_hash;
 mod from_unique_ord;
 mod group_hash_map;
+mod last;
 mod last_n;
 mod max;
 mod min;
 mod mul;
+mod noop;
 mod product;
 mod sum;
 mod topk;
@@ -50,17 +54,21 @@ mod uniquify_hash;
 mod uniquify_ord;
 
 pub use add::*;
+pub use count::*;
 #[cfg(feature = "unstable")]
 pub use exact_array::*;
 #[cfg(feature = "unstable")]
 pub use fill_array::*;
+pub use first::*;
 pub use from_unique_hash::*;
 pub use from_unique_ord::*;
 pub use group_hash_map::*;
+pub use last::*;
 pub use last_n::*;
 pub use max::*;
 pub use min::*;
 pub use mul::*;
+pub use noop::*;
 pub use product::*;
 pub use sum::*;
 pub use topk::*;
